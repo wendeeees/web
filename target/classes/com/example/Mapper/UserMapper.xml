@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.Mapper.UserMapper">
+    <select id="userselect" resultType="com.example.pojo.Resources">
+        select *from no3data.resources
+        <where>
+            <if test="part!=null">
+#             复合筛选
+                (title like concat('%',#{part},'%') or(select username from users where users.user_id=resources.user_id) like concat('%',#{part},'%'))
+            </if>
+# 类型筛选
+            <if test="Resources!=null">
+                and category=#{Resources.category}
+                #……
+            </if>
+
+        </where>
+    </select>
+</mapper>
